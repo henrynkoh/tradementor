@@ -30,13 +30,21 @@ export default function ChartComponent({
   const [candleSeries, setCandleSeries] = useState<ISeriesApi<'Candlestick'> | null>(null);
   const [vwapSeries, setVwapSeries] = useState<ISeriesApi<'Line'> | null>(null);
   const [smaSeries, setSmaSeries] = useState<ISeriesApi<'Line'> | null>(null);
+  const isChartDisposed = useRef(false);
   
   // Create chart instance
   useEffect(() => {
     if (chartContainerRef.current) {
-      // Clean up old chart
+      // Reset the disposed state
+      isChartDisposed.current = false;
+      
+      // Clean up old chart safely
       if (chart) {
-        chart.remove();
+        try {
+          chart.remove();
+        } catch (e) {
+          console.warn('Chart was already disposed');
+        }
       }
       
       // Create new chart
@@ -44,16 +52,17 @@ export default function ChartComponent({
         width: chartContainerRef.current.clientWidth || width,
         height: height,
         layout: {
-          background: { type: ColorType.Solid, color: '#FFFFFF' },
-          textColor: '#333',
+          background: { type: ColorType.Solid, color: '#1E293B' }, // Darker background
+          textColor: '#E2E8F0', // Lighter text for better contrast
         },
         grid: {
-          vertLines: { color: '#F0F3FA' },
-          horzLines: { color: '#F0F3FA' },
+          vertLines: { color: '#334155' }, // Darker grid lines
+          horzLines: { color: '#334155' },
         },
         timeScale: {
           timeVisible: true,
           secondsVisible: false,
+          borderColor: '#475569',
         },
       });
       
@@ -61,11 +70,11 @@ export default function ChartComponent({
       
       // Create candlestick series
       const newCandleSeries = newChart.addCandlestickSeries({
-        upColor: '#26a69a',
-        downColor: '#ef5350',
+        upColor: '#10B981', // Brighter green
+        downColor: '#EF4444', // Brighter red
         borderVisible: false,
-        wickUpColor: '#26a69a',
-        wickDownColor: '#ef5350',
+        wickUpColor: '#10B981',
+        wickDownColor: '#EF4444',
       });
       
       setCandleSeries(newCandleSeries);
@@ -84,7 +93,7 @@ export default function ChartComponent({
       // Add VWAP series
       if (showVWAP) {
         const newVwapSeries = newChart.addLineSeries({
-          color: '#9c27b0',
+          color: '#C084FC', // Brighter purple
           lineWidth: 2,
           title: 'VWAP',
         });
@@ -106,7 +115,7 @@ export default function ChartComponent({
       // Add SMA series - 8-day and 20-day
       if (showSMA) {
         const newSmaSeries = newChart.addLineSeries({
-          color: '#2196F3',
+          color: '#38BDF8', // Brighter blue
           lineWidth: 2,
           title: '8-day SMA',
         });
@@ -137,10 +146,14 @@ export default function ChartComponent({
       
       // Handle window resize
       const handleResize = () => {
-        if (chartContainerRef.current && newChart) {
-          newChart.applyOptions({
-            width: chartContainerRef.current.clientWidth,
-          });
+        if (chartContainerRef.current && newChart && !isChartDisposed.current) {
+          try {
+            newChart.applyOptions({
+              width: chartContainerRef.current.clientWidth,
+            });
+          } catch (e) {
+            console.warn('Failed to resize chart, it may be disposed');
+          }
         }
       };
       
@@ -148,14 +161,21 @@ export default function ChartComponent({
       
       return () => {
         window.removeEventListener('resize', handleResize);
-        newChart.remove();
+        if (!isChartDisposed.current) {
+          try {
+            newChart.remove();
+            isChartDisposed.current = true;
+          } catch (e) {
+            console.warn('Error removing chart:', e);
+          }
+        }
       };
     }
   }, [data, height, width, showVWAP, showSMA]);
   
   return (
     <div className="chart-container w-full">
-      <div ref={chartContainerRef} className="chart bg-white rounded-lg shadow-md"></div>
+      <div ref={chartContainerRef} className="chart rounded-lg shadow-md"></div>
     </div>
   );
 } 

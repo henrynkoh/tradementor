@@ -45,24 +45,24 @@ export default function TrainingModule({
   const progress = ((currentStepIndex + 1) / steps.length) * 100;
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-slate-800 rounded-lg shadow-lg border border-slate-700 overflow-hidden">
       <div className="p-6">
-        <h2 className="text-2xl font-bold mb-2">{title}</h2>
-        <p className="text-gray-600 mb-4">{description}</p>
+        <h2 className="text-2xl font-bold mb-2 text-white">{title}</h2>
+        <p className="text-gray-300 mb-4">{description}</p>
         
-        <div className="mb-4 bg-gray-200 rounded-full h-2.5">
+        <div className="mb-4 bg-slate-700 rounded-full h-2.5">
           <div 
-            className="bg-primary-600 h-2.5 rounded-full" 
+            className="bg-blue-500 h-2.5 rounded-full" 
             style={{ width: `${progress}%` }}
           />
         </div>
         
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">
+          <h3 className="text-lg font-semibold mb-2 text-gray-100">
             Step {currentStepIndex + 1}: {currentStep.title}
           </h3>
-          <div className="prose max-w-none">
-            {currentStep.content}
+          <div className="prose prose-invert max-w-none text-gray-200">
+            <div dangerouslySetInnerHTML={{ __html: currentStep.content }} />
           </div>
         </div>
         
@@ -72,8 +72,8 @@ export default function TrainingModule({
             disabled={currentStepIndex === 0}
             className={`px-4 py-2 rounded-md ${
               currentStepIndex === 0
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-gray-500 text-white hover:bg-gray-600'
+                ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
+                : 'bg-slate-600 text-white hover:bg-slate-700'
             }`}
           >
             Previous
@@ -83,8 +83,8 @@ export default function TrainingModule({
             onClick={handleNextStep}
             className={`px-4 py-2 rounded-md ${
               isCompleted
-                ? 'bg-success text-white'
-                : 'bg-primary-600 text-white hover:bg-primary-700'
+                ? 'bg-green-600 text-white hover:bg-green-700'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >
             {isCompleted

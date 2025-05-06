@@ -8,10 +8,10 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-primary-700 text-white">
+    <nav className="bg-slate-800 text-white shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold">TradeMentor</Link>
+          <Link href="/" className="text-2xl font-bold text-white">TradeMentor</Link>
           
           {/* Mobile menu button */}
           <button 
@@ -45,10 +45,10 @@ export default function Navbar() {
           
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-8">
-            <Link href="/" className="hover:text-primary-200 transition-colors">Home</Link>
-            <Link href="/charts" className="hover:text-primary-200 transition-colors">Charts</Link>
-            <Link href="/training" className="hover:text-primary-200 transition-colors">Training</Link>
-            <Link href="/about" className="hover:text-primary-200 transition-colors">About</Link>
+            <Link href="/" className="text-gray-100 hover:text-white hover:underline transition-colors font-medium">Home</Link>
+            <Link href="/charts" className="text-gray-100 hover:text-white hover:underline transition-colors font-medium">Charts</Link>
+            <Link href="/training" className="text-gray-100 hover:text-white hover:underline transition-colors font-medium">Training</Link>
+            <Link href="/about" className="text-gray-100 hover:text-white hover:underline transition-colors font-medium">About</Link>
           </div>
         </div>
         
@@ -58,10 +58,10 @@ export default function Navbar() {
           isMobileMenuOpen ? "block" : "hidden"
         )}>
           <div className="flex flex-col space-y-4 pb-4">
-            <Link href="/" className="hover:text-primary-200 transition-colors">Home</Link>
-            <Link href="/charts" className="hover:text-primary-200 transition-colors">Charts</Link>
-            <Link href="/training" className="hover:text-primary-200 transition-colors">Training</Link>
-            <Link href="/about" className="hover:text-primary-200 transition-colors">About</Link>
+            <Link href="/" className="text-gray-100 hover:text-white hover:underline transition-colors">Home</Link>
+            <Link href="/charts" className="text-gray-100 hover:text-white hover:underline transition-colors">Charts</Link>
+            <Link href="/training" className="text-gray-100 hover:text-white hover:underline transition-colors">Training</Link>
+            <Link href="/about" className="text-gray-100 hover:text-white hover:underline transition-colors">About</Link>
           </div>
         </div>
       </div>
